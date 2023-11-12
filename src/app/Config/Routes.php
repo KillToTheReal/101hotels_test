@@ -33,12 +33,23 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
+
+//I could have used the special requests for actions (PUT for update, DELETE for delete), but i'm not making api and don't wanna get into codeigniter specifications Right now, so i use get/post
+//Returns main page
 $routes->get('/', 'PostController::index');
+//Logics of adding new post
 $routes->post('/post/add', 'PostController::create');
+// Returns all posts to display in a list
 $routes->get('/post/fetch', 'PostController::fetchAll');
+// Returns all fields of editable post to fill the edit form
 $routes->get('/post/edit/(:num)', 'PostController::edit/$1');
+// Logics of updating existing post
 $routes->post('/post/update', 'PostController::update');
+// Logics of deleting existing post
 $routes->post('/post/delete', 'PostController::delete');
+//Get all data of post to show details
+$routes->get('post/detail/(:num)', 'PostController::detail/$1');
 
 
 /*

@@ -124,6 +124,33 @@
     </div>
     <!-- delete post modal window end -->
 
+    <!-- full post modal window start -->
+    <div class="modal fade" id="detail_post_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="detail_post_image" class="img-fluid">
+                    <h3 id="detail_post_title" class="mt-3"></h3>
+                    <h5 id="detail_post_category"></h5>
+                    <p id="detail_post_body"></p>
+                    <p id="detail_post_created_at" class="fst-italic"></p>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- full post modal window end -->
+
 
     <div class="container">
         <div class="row md-4">
@@ -134,7 +161,8 @@
                         <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#add_post_modal">Add New Post</button>
                     </div>
                     <div class="card p-5">
-                        <div class="row" id="show_posts">
+                        <div class="row align-items-center" id="show_posts">
+                            <!-- Structure of card layout is inside PostController::fetchAll -->
                             <h1 class="text-secondary text-center my-5"> Posts Loading... </h1>
                         </div>
                     </div>
@@ -199,7 +227,7 @@
                     });
                 });
 
-                //edit post submit
+                //edit post form submit
                 $("#edit_post_form").submit(function(e) {
                     e.preventDefault();
                     const formData = new FormData(this);
@@ -224,13 +252,14 @@
                         })
                     }
                 });
+
                 // Delete post ajax request
                 $(document).delegate('.post_delete_btn', 'click', function(e) {
                     e.preventDefault();
                     const id = $(this).attr('id');
                     $('#del_pid').val(id);
                 });
-
+                // Delete post form submit
                 $("#delete_post_form").submit(function(e) {
                     e.preventDefault();
                     const formData = new FormData(this);
@@ -252,8 +281,7 @@
                     })
                 });
 
-
-                //get all posts ajax request
+                //get all posts to display
                 fetchAllPosts();
 
                 function fetchAllPosts() {
@@ -265,6 +293,26 @@
                         }
                     })
                 }
+
+                $(document).delegate('.post_detail_btn', 'click', function(e) {
+                    e.preventDefault();
+                    const id = $(this).attr('id');
+                    $.ajax({
+                        url: '<?= base_url('post/detail/') ?>/' + id,
+                        method: "get",
+                        dataType: 'json',
+                        success: function(resp) {
+                            console.log(resp);
+                            $("#detail_post_image").attr('src', '<?= base_url('uploads/headlines/') ?>/' + resp.message.image);
+                            $("#detail_post_title").text(resp.message.title);
+                            $("#detail_post_category").text(resp.message.category);
+                            $("#detail_post_body").text(resp.message.body);
+                            $("#detail_post_created_at").text(resp.message.created_at);
+
+
+                        }
+                    })
+                });
             });
         </script>
 </body>

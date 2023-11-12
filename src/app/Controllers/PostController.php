@@ -21,7 +21,8 @@ class PostController extends BaseController
 			foreach ($posts as $post) {
 				$data .= '<div class="col-4">
 				<div class="card shadow-sm">
-					<a href="#" id="' . $post['id'] . '" class="post_detail_btn"> <img src="uploads/headlines/' . $post['image'] . '" alt="Post Headline" class="img-fluid card-img-top"> </a>
+					<a href="#" id="' . $post['id'] . '" data-bs-toggle="modal" data-bs-target="#detail_post_modal" class="post_detail_btn text-decoration-none text-black">  <!-- Clickable modal zone start --!>
+						<img src="uploads/headlines/' . $post['image'] . '" alt="Post Headline" class="img-fluid card-img-top"> 
 				</div>
 				<div class="card-body">
 					<div class="d-flex justify-content-between align-items-center">
@@ -31,6 +32,7 @@ class PostController extends BaseController
 					<div class=" card-text">' . substr($post['body'], 0, 80) . '...
 					</div>
 				</div>
+					</a> <!-- Clickable modal zone end --!>
 				<div class="card-footer d-flex justify-content-between align-items-center">
 					<div class="fst-italic">' . date('d F Y', strtotime($post['created_at'])) . '</div>
 					<div>
@@ -141,6 +143,17 @@ class PostController extends BaseController
 		return $this->response->setJSON([
 			'error' => false,
 			'message' => 'Successfully deleted post!',
+		]);
+	}
+
+	public function detail($id = null)
+	{
+		$postModel = new \App\Models\Post();
+		$post = $postModel->find($id);
+		$post['created_at'] = date('d F Y', strtotime($post['created_at']));
+		return $this->response->setJSON([
+			'error' => false,
+			'message' => $post,
 		]);
 	}
 }
