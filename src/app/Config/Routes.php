@@ -2,8 +2,6 @@
 
 namespace Config;
 
-use App\Controllers\PostController;
-
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
@@ -49,9 +47,15 @@ $routes->post('/post/update', 'PostController::update');
 // Logics of deleting existing post
 $routes->post('/post/delete', 'PostController::delete');
 //Get all data of post to show details
-$routes->get('post/detail/(:num)', 'PostController::detail/$1');
+$routes->get('/post/detail/(:num)', 'PostController::detail/$1');
+// Adding a new comment
+$routes->post('/comment/add', 'CommentsController::create');
+// All comments for a post
 
+//Fetch comments function. fetch/post_id/field_to_filter/Order_to_filter/pagination_page
+$routes->get('/comment/fetch/(:any)/(:any)/(:any)/(:any)', 'CommentsController::fetch/$1/$2/$3/$4');
 
+$routes->post('/comment/delete/(:num)', 'CommentsController::delete/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

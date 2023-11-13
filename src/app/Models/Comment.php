@@ -14,7 +14,7 @@ class Comment extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDelete        = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['post_id', 'name', 'text', 'date'];
+	protected $allowedFields        = ['id', 'post_id', 'name', 'text', 'date'];
 
 	// Dates
 	protected $useTimestamps        = false;
